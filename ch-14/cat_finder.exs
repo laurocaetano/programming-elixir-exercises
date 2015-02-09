@@ -32,14 +32,15 @@ defmodule Scheduler do
       |> collect_results([])
   end
 
+  def collect_results([], results) do
+    results
+  end
+
   def collect_results(processes, results) do
     receive do
-      {child_pid, calculated_value} when length(processes) > 1 ->
-        send(child_pid, {:shutdown})
-        collect_results(List.delete(processes, child_pid), results ++ [calculated_value])
       {child_pid, calculated_value} ->
         send(child_pid, {:shutdown})
-        results ++ [calculated_value]
+        collect_results(List.delete(processes, child_pid), [calculated_value|results])
     end
   end
 end
