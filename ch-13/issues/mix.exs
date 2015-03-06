@@ -5,7 +5,10 @@ defmodule Issues.Mixfile do
     [app: :issues,
      version: "0.0.1",
      elixir: "~> 1.0",
-     deps: deps]
+     deps: deps,
+     aliases: ["test.all": &test_all/1],
+     test_paths: test_paths(Mix.env),
+     preferred_cli_env: ["test.all": :test]]
   end
 
   # Configuration for the OTP application
@@ -29,5 +32,21 @@ defmodule Issues.Mixfile do
         {:httpoison, "~> 0.4"},
         {:jsx, "~> 2.0"}
     ]
+  end
+
+  defp test_paths(:integration), do: ["integration_tests/cases"]
+  defp test_paths(_), do: ["test"]
+
+
+  def test_all(args) do
+    args = if IO.ANSI.enabled?, do: ["--color"|args], else: ["--no-color"|args]
+
+    IO.puts "Running unit tests"
+    Mix.Task.run "test", args
+
+    IO.puts "Running integration tests"
+    System.cmd("mix", ["test"|args],
+               into: IO.binstream(:stdio, :line),
+               env: [{"MIX_ENV", "integration"}])
   end
 end
