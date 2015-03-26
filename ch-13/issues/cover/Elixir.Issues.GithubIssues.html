@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>cover/Elixir.Issues.GithubIssues.html</title>
+</head><body style='background-color: white; color: black'>
+<pre>
+File generated from /Users/laurocaetano/src/elixir/programming-elixir/ch-13/issues/lib/issues/github_issues.ex by COVER 2015-03-26 at 16:27:57
+
+****************************************************************************
+
+<font color=red>     0..|  defmodule Issues.GithubIssues do</font>
+        |    @user_agent [{"User-agent", "Programming Elixir"}]
+        |    @github_url Application.get_env(:issues, :github_url)
+        |  
+        |    def fetch(user, project) do
+        |      issues_url(user, project)
+        |        |&gt; HTTPoison.get(@user_agent)
+<font color=red>     0..|        |&gt; handle_response</font>
+        |    end
+        |  
+        |    def issues_url(user, project) do
+<font color=red>     0..|      "#{@github_url}/repos/#{user}/#{project}/issues"</font>
+        |    end
+        |  
+        |    def handle_response({_, %{status_code: 200, body: body}}), do: {:ok, :jsx.decode(body)}
+        |    def handle_response({_, %{status_code: ___, body: body}}), do: {:error, :jsx.decode(body)}
+        |  end
+</pre>
+</body>
+</html>

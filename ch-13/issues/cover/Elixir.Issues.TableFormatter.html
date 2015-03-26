@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>cover/Elixir.Issues.TableFormatter.html</title>
+</head><body style='background-color: white; color: black'>
+<pre>
+File generated from /Users/laurocaetano/src/elixir/programming-elixir/ch-13/issues/lib/issues/table_formatter.ex by COVER 2015-03-26 at 16:27:57
+
+****************************************************************************
+
+<font color=red>     0..|  defmodule Issues.TableFormatter do</font>
+        |    import Enum, only: [ each: 2, map: 2, map_join: 3, max: 1 ]
+        |  
+        |    def print_table_for_columns(rows, headers) do
+<font color=red>     0..|      data_by_columns = split_into_columns(rows, headers)</font>
+<font color=red>     0..|      column_widths   = widths_of(data_by_columns)</font>
+<font color=red>     0..|      format          = format_for(column_widths)</font>
+        |  
+<font color=red>     0..|      puts_one_line_in_columns headers, format</font>
+<font color=red>     0..|      IO.puts                  separator(column_widths)</font>
+<font color=red>     0..|      puts_in_columns          data_by_columns, format</font>
+        |    end
+        |  
+        |    def split_into_columns(rows, headers) do
+<font color=red>     0..|      for header &lt;- headers do</font>
+<font color=red>     0..|        for row &lt;- rows, do: printable(row[header])</font>
+        |      end
+        |    end
+        |  
+<font color=red>     0..|    def printable(str) when is_binary(str), do: str</font>
+<font color=red>     0..|    def printable(str), do: to_string(str)</font>
+        |  
+        |    def widths_of(columns) do
+<font color=red>     0..|      for column &lt;- columns, do: column |&gt; map(&amp;String.length/1) |&gt; max</font>
+        |    end
+        |  
+        |    def format_for(column_widths) do
+<font color=red>     0..|      map_join(column_widths, " | ", fn width -&gt; "~-#{width}s" end) &lt;&gt; "~n"</font>
+        |    end
+        |  
+        |    def separator(column_widths) do
+<font color=red>     0..|      map_join(column_widths, "-+-", fn width -&gt; List.duplicate("-", width) end)</font>
+        |    end
+        |  
+        |    def puts_in_columns(data_by_columns, format) do
+        |      data_by_columns
+        |      |&gt; List.zip
+        |      |&gt; map(&amp;Tuple.to_list/1)
+<font color=red>     0..|      |&gt; each(&amp;puts_one_line_in_columns(&amp;1, format))</font>
+        |    end
+        |  
+        |    def puts_one_line_in_columns(fields, format) do
+<font color=red>     0..|      :io.format(format, fields)</font>
+        |    end
+        |  end
+</pre>
+</body>
+</html>

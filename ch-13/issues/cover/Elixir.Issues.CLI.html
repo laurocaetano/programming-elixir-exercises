@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<title>cover/Elixir.Issues.CLI.html</title>
+</head><body style='background-color: white; color: black'>
+<pre>
+File generated from /Users/laurocaetano/src/elixir/programming-elixir/ch-13/issues/lib/issues/cli.ex by COVER 2015-03-26 at 16:27:57
+
+****************************************************************************
+
+<font color=red>     0..|  defmodule Issues.CLI do</font>
+        |    import Issues.TableFormatter, only: [print_table_for_columns: 2]
+        |  
+        |    @default_count 4
+        |  
+        |    @moduledoc """
+        |    Handle the command line parsing and the dispatch to
+        |    the various functions that end up generating a table
+        |    of the last _n_ issues in a github project
+        |    """
+        |  
+        |    def run(argv) do
+        |      argv
+        |        |&gt; parse_args
+<font color=red>     0..|        |&gt; process</font>
+        |    end
+        |  
+        |    @doc """
+        |    `argv` can be -h or --help, which returns :help.
+        |    Otherwise it is a github user name, project name, and (optionally)
+        |    the number of entries to format.
+        |    Return a tuple of `{ user, project, count }`, or `:help` if help was given.
+        |    """
+        |    def parse_args(argv) do
+<font color=red>     0..|      parse = OptionParser.parse(argv, switches: [help: :boolean], aliases: [h: :help])</font>
+        |  
+<font color=red>     0..|      case parse do</font>
+        |        {[help: true], _, _} -&gt; :help
+<font color=red>     0..|        {_, [user, project, count], _} -&gt; {user, project, String.to_integer(count)}</font>
+<font color=red>     0..|        {_, [user, project], _} -&gt; {user, project, @default_count}</font>
+        |        _ -&gt; :help
+        |      end
+        |    end
+        |  
+        |    def process(:help) do
+<font color=red>     0..|      IO.puts """</font>
+<font color=red>     0..|      usage: issues &lt;user&gt; &lt;project&gt; [count | #{@default_count}]</font>
+        |      """
+<font color=red>     0..|      System.halt(0)</font>
+        |    end
+        |  
+        |    def process({{user, project, count}}) do
+        |      Issues.GithubIssues.fetch(user, project)
+        |      |&gt; decode_response
+        |      |&gt; convert_to_list_of_hashdicts
+        |      |&gt; sort_into_ascending_order
+        |      |&gt; Enum.take(count)
+<font color=red>     0..|      |&gt; print_table_for_columns(["number", "created_at", "title"])</font>
+        |    end
+        |  
+<font color=red>     0..|    def decode_response({:ok, body}), do: body</font>
+        |    def decode_response({:error, error}) do
+<font color=red>     0..|      {_, message} = List.keyfind(error, "message", 0)</font>
+<font color=red>     0..|      IO.puts "Error fetching from Github: #{message}"</font>
+<font color=red>     0..|      System.halt(2)</font>
+        |    end
+        |  
+        |    def convert_to_list_of_hashdicts(list) do
+<font color=red>     0..|      Enum.map(list, &amp;Enum.into(&amp;1, HashDict.new))</font>
+        |    end
+        |  
+        |    def sort_into_ascending_order(list_of_issues) do
+<font color=red>     0..|      Enum.sort list_of_issues, &amp;(&amp;1["created_at"] &lt;= &amp;2["created_at"])</font>
+        |    end
+        |  end
+</pre>
+</body>
+</html>
