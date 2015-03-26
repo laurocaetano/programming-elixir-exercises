@@ -39,7 +39,7 @@ defmodule Issues.CLI do
     System.halt(0)
   end
 
-  def process({{user, project, count}}) do
+  def process({user, project, count}) do
     Issues.GithubIssues.fetch(user, project)
     |> decode_response
     |> convert_to_list_of_hashdicts

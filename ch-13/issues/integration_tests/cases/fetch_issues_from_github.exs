@@ -4,7 +4,7 @@ defmodule Issues.Integration.FetchTest do
 
   test "gets user information from github" do
     assert capture_io(fn ->
-      Issues.CLI.process({{"elixir-lang", "elixir", 3}})
+      Issues.CLI.process({"elixir-lang", "elixir", 3})
     end) ==
     ~s{numb | created_at           | title                             \n} <>
     ~s{-----+----------------------+-----------------------------------\n} <>
