@@ -1,5 +1,5 @@
 defmodule Issues.CLI do
-  import Issues.TableFormatter, only: [print_table_for_columns: 2]
+  import TableFormatter, only: [print_table_for_columns: 2]
 
   @default_count 4
 

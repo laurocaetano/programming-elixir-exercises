@@ -31,7 +31,8 @@ defmodule Issues.Mixfile do
   defp deps do
     [
         {:httpoison, "~> 0.4"},
-        {:jsx, "~> 2.0"}
+        {:jsx, "~> 2.0"},
+        {:table_formatter, path: "../table_formatter"}
     ]
   end
 

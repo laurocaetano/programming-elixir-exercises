@@ -1,8 +1,8 @@
 defmodule TableFormatterTest do
-  use ExUnit.Case          # bring in the test functionality
-  import ExUnit.CaptureIO  # And allow us to capture stuff sent to stdout
+  use ExUnit.Case
+  import ExUnit.CaptureIO
 
-  alias Issues.TableFormatter, as: TF
+  alias TableFormatter, as: TF
 
   def simple_test_data do
     [[ c1: "r1 c1", c2: "r1 c2",  c3: "r1 c3", c4: "r1+++c4" ],
